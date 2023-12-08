@@ -66,8 +66,8 @@ export class SphereDomeModel {
     const { domeRadius: R, sphereRadius: r, friction: mu, thetaStart: theta0, mass: m } = this.conditions;
 
     const dTheta = (t: number, theta: number) => 2 * sqrt((5 * g) / (R + r)) * sin(theta / 2);
-    const stopCondition = (theta: number, t: number) => theta > acos(10 / 17);
-    const results = RK4Conditioned(dTheta, theta0, 0, stopCondition);
+    const stopCondition = (time: number, theta: number) => theta > acos(10 / 17) && time < SphereAnimation.duration;
+    const results = RK4Conditioned(dTheta, 0, theta0, stopCondition);
 
     for (let result of results) {
       var [time, theta] = result;

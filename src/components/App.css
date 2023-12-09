@@ -11,6 +11,11 @@ body,
   padding: 0;
 }
 
+#page {
+  width: 100vw;
+  height: 100vh;
+}
+
 .boardCanvas {
   text-align: center;
 }
@@ -27,4 +32,17 @@ body,
   width: 10rem;
   background: rgba(255, 255, 255, 0.4);
   border-radius: 1rem;
+}
+
+.slider-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#time-slider {
+  width: 95%;
+  margin-bottom: 1rem;
 }

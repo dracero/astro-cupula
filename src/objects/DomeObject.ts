@@ -49,7 +49,6 @@ export class DomeObject extends THREE.Object3D {
 
   update() {
     this.animation.update();
-    if (!this.animation.isPlaying) return;
 
     const instant = this.model.getValuesAt(this.animation.time);
     this.diagrams.update(instant);

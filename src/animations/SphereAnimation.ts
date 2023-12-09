@@ -11,6 +11,8 @@ export class SphereAnimation {
   mixer: THREE.AnimationMixer;
   action: THREE.AnimationAction;
 
+  private slider: HTMLInputElement;
+
   constructor(obj: THREE.Object3D, model: SphereDomeModel) {
     const positions: number[] = [];
     const rotations: number[] = [];
@@ -31,11 +33,14 @@ export class SphereAnimation {
 
     addDatListener("datgui-speed", (e) => (this.speed = e.value));
 
-    addDatListener("datgui-togglePlay", () => (this.action.paused = !this.action.paused));
-  }
+    addDatListener("datgui-togglePlay", () => this.togglePlay());
 
-  update() {
-    this.mixer.update(Clock.delta * this.speed);
+    this.slider = document.getElementById("time-slider") as HTMLInputElement;
+    this.slider.addEventListener("input", this.onSliderUpdate.bind(this));
+
+    addEventListener("keypress", (ev) => {
+      if (ev.key == " ") this.togglePlay();
+    });
   }
 
   get time(): number {
@@ -44,5 +49,20 @@ export class SphereAnimation {
 
   get isPlaying(): boolean {
     return this.action.isRunning();
+  }
+
+  update() {
+    this.mixer.update(Clock.delta * this.speed);
+    this.slider.value = `${this.time / SphereAnimation.duration}`;
+  }
+
+  togglePlay(value = this.action.paused) {
+    this.action.paused = !value;
+  }
+
+  private onSliderUpdate(ev: Event) {
+    const time = parseFloat(this.slider.value) * SphereAnimation.duration;
+    this.action.time = time;
+    this.togglePlay(false);
   }
 }

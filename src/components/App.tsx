@@ -21,7 +21,7 @@ const App = () => {
       </div>
 
       <div className="slider-container">
-        <input id="time-slider" type="range" min="0" max="1" step="0.005" />
+        <input id="time-slider" type="range" min="0" max="1" step="0.000001" />
       </div>
     </div>
     </>

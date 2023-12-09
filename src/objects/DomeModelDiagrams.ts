@@ -85,7 +85,7 @@ export class DomeModelDiagrams extends THREE.Group {
     const arc = new THREE.ArcCurve(0, 0, 3, PI / 2, PI / 2 - theta, true);
     this.angleArc.geometry.setFromPoints(arc.getPoints(16));
 
-    this.thetaSpan.innerText = `θ = ${theta.toFixed(2)}`;
+    this.thetaSpan.innerText = `θ = ${theta.toFixed(4)}`;
 
     // Contact arrow
     if (contactForce.lengthSq() == 0) {

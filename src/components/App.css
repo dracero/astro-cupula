@@ -46,3 +46,13 @@ body,
   width: 95%;
   margin-bottom: 1rem;
 }
+
+#VRButton {
+  position: absolute !important;
+  bottom: 3rem !important;
+  right: 2rem !important;
+  left: unset !important;
+  background: rgba(100, 0, 255, 0.2) !important;
+  color: #222222 !important;
+  border-color: #222222 !important;
+}

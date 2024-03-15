@@ -46,7 +46,7 @@ export class DomeModelDiagrams extends THREE.Group {
     // Friction force
     this.frictionArrow = new THREE.ArrowHelper();
     this.frictionArrow.name = "friction";
-    this.frictionArrow.setColor(0xffff00);
+    this.frictionArrow.setColor(0x0000ff);
     (this.frictionArrow.line.material as THREE.Material).depthTest = false;
     (this.frictionArrow.cone.material as THREE.Material).depthTest = false;
     this.add(this.frictionArrow);

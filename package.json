@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test-rk4": "npx ts-node --project tsconfig-scripts.json ./scripts/test-rk4.ts"
+    "test-rk4": "npx ts-node --project ./scripts/tsconfig-scripts.json ./scripts/test-rk4.ts"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.4",

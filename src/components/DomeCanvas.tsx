@@ -21,7 +21,7 @@ export const DomeCanvas = (props) => {
   const gltf = useGLTF(DOME_GLB);
   const dome = w.dome = new DomeObject(gltf.scene);
 
-  scene.background = new THREE.Color(0x222233)
+  scene.background = new THREE.Color(0xffffff)
 
   addDatListener('datgui-2D', (e) => {
     setShow2d(e.value);

@@ -1,11 +1,17 @@
 import * as THREE from "three";
 import { VRButton } from "three/addons/webxr/VRButton.js";
+import { ControllersManager } from "./ControllersManager";
+import { XRControllerEvents } from "./XRController";
+import type { XRControllerButtonDownEvent, XRControllerEventListener } from "./types";
 
 export namespace XRManager {
   let renderer: THREE.WebGLRenderer;
   let baseReferenceSpace: XRReferenceSpace;
 
   export function init(r: THREE.WebGLRenderer) {
+    // Check if already initialized
+    if (renderer) return;
+
     renderer = r;
 
     navigator.xr.isSessionSupported("immersive-vr").then((supported) => {
@@ -20,12 +26,27 @@ export namespace XRManager {
   // "Private" stuff
   function enableXR() {
     renderer.xr.enabled = true;
+
     const vrButton = VRButton.createButton(renderer);
     document.body.appendChild(vrButton);
 
-    renderer.xr.addEventListener("sessionstart", function (event) {
+    ControllersManager.setup(renderer.xr);
+
+    renderer.xr.addEventListener("sessionstart", () => {
       baseReferenceSpace = renderer.xr.getReferenceSpace();
-      teleport(new THREE.Vector3(0, 0, 10));
+      teleport(new THREE.Vector3(0, 0, 20));
+
+      const controllers = ControllersManager.instance;
+      controllers.onConnected(() => {
+        controllers.left.on(XRControllerEvents.buttondown, (ev: XRControllerButtonDownEvent) => {
+          if (ev.button == "Y" || ev.button == "X") console.log("Toggle play", ev.button);
+        });
+
+        controllers.right.on(XRControllerEvents.buttondown, (ev: XRControllerButtonDownEvent) => {
+          if (ev.button == "A" || ev.button == "B") console.log("Toggle play", ev.button);
+        });
+      });
+      controllers.connect();
     });
 
     renderer.xr.addEventListener("sessionend", function (event) {

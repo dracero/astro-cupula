@@ -4,6 +4,7 @@ import { useGLTF, OrbitControls, PerspectiveCamera, OrthographicCamera } from "@
 import { DomeObject } from "../objects/DomeObject";
 import { useFrame, useThree } from "@react-three/fiber";
 import { addDatListener } from "./DatGUI";
+import { ControllersManager } from "../xr/ControllersManager";
 
 const DOME_GLB = 'cupula_jml-test.glb'
 
@@ -30,6 +31,7 @@ export const DomeCanvas = (props) => {
 
   useFrame(() => {
     dome.update()
+    ControllersManager.update()
   })
 
   return (

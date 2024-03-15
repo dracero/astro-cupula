@@ -39,11 +39,11 @@ export namespace XRManager {
       const controllers = ControllersManager.instance;
       controllers.onConnected(() => {
         controllers.left.on(XRControllerEvents.buttondown, (ev: XRControllerButtonDownEvent) => {
-          if (ev.button == "Y" || ev.button == "X") console.log("Toggle play", ev.button);
+          if (ev.button == "Y" || ev.button == "X") dispatchEvent(new Event("togglePlay"));
         });
 
         controllers.right.on(XRControllerEvents.buttondown, (ev: XRControllerButtonDownEvent) => {
-          if (ev.button == "A" || ev.button == "B") console.log("Toggle play", ev.button);
+          if (ev.button == "A" || ev.button == "B") dispatchEvent(new Event("togglePlay"));
         });
       });
       controllers.connect();

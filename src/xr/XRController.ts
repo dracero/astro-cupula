@@ -27,7 +27,7 @@ export class XRController {
   }
 
   get connected(): boolean {
-    return !!this.webxrController?.userData.connected && !!this._handedness;
+    return !!this.webxrController?.userData.connected;
   }
 
   get buttons(): readonly GamepadButton[] {

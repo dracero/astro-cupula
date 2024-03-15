@@ -32,8 +32,9 @@ export class SphereAnimation {
     this.action = this.mixer.clipAction(clip);
 
     addDatListener("datgui-speed", (e) => (this.speed = e.value));
-
     addDatListener("datgui-togglePlay", () => this.togglePlay());
+
+    addEventListener("togglePlay", () => this.togglePlay());
 
     this.slider = document.getElementById("time-slider") as HTMLInputElement;
     this.slider.addEventListener("input", this.onSliderUpdate.bind(this));

@@ -34,7 +34,7 @@ export namespace XRManager {
 
     renderer.xr.addEventListener("sessionstart", () => {
       baseReferenceSpace = renderer.xr.getReferenceSpace();
-      teleport(new THREE.Vector3(0, 0, 20));
+      teleport(new THREE.Vector3(0, 0, 3));
 
       const controllers = ControllersManager.instance;
       controllers.onConnected(() => {

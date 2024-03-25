@@ -34,6 +34,9 @@ export const DomeCanvas = (props) => {
     ControllersManager.update()
   })
 
+  const domeScale = DomeObject.DOME_RADIUS / 10
+  const perspectivePos = new THREE.Vector3(15, 15, 30).multiplyScalar(domeScale)
+
   return (
     <>
       {/* GLB content */}
@@ -48,8 +51,8 @@ export const DomeCanvas = (props) => {
       <OrbitControls ref={perspControlsRef} camera={perspectiveCamRef.current} enabled={!show2d} />
       <OrbitControls ref={orthoControlsRef} camera={orthoCamRef.current} enableRotate={false} enabled={show2d} />
 
-      <PerspectiveCamera ref={perspectiveCamRef} makeDefault position={[15, 15, 30]} />
-      <OrthographicCamera ref={orthoCamRef} position={[0, 0, 15]} zoom={40} />
+      <PerspectiveCamera ref={perspectiveCamRef} makeDefault position={perspectivePos} />
+      <OrthographicCamera ref={orthoCamRef} position={[0, 0, 15]} zoom={35 / domeScale} near={0} far={1000} />
 
       {/* Some custom lighting */}
       <ambientLight intensity={0.5} />

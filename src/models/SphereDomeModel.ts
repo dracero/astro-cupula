@@ -66,9 +66,10 @@ export class SphereDomeModel {
     const { domeRadius: R, sphereRadius: r, friction: mu, thetaStart: theta0, mass: m } = this.conditions;
 
     const dTheta = (t: number, theta: number) => 2 * sqrt((5 * g) / (R + r)) * sin(theta / 2);
-    const stopCondition = (time: number, theta: number) => theta > acos(10 / 17) && time < SphereAnimation.duration;
+    const stopCondition = (time: number, theta: number) => theta > acos(10 / 17);
     const results = RK4Conditioned(dTheta, 0, theta0, stopCondition);
 
+    // Discretize while sphere is touching dome
     for (let result of results) {
       var [time, theta] = result;
       const speed = (R + r) * dTheta(time, theta);
@@ -96,8 +97,11 @@ export class SphereDomeModel {
       this.discretizedValues.push(instant);
     }
 
+    // Free-fall discretization (sphere is not touching dome)
     const dt = results[1][0] - results[0][0];
-    for (time += dt; time <= SphereAnimation.duration; time += dt) {
+    time += dt;
+    while (theta < PI / 1.5) {
+      // for (time += dt; time <= SphereAnimation.duration; time += dt) {
       const dp = velocity.clone().multiplyScalar(dt);
       position.add(dp);
 
@@ -114,6 +118,9 @@ export class SphereDomeModel {
 
       const dv = new THREE.Vector2(0, -g).multiplyScalar(dt);
       velocity.add(dv);
+
+      time += dt;
+      theta = position.angleTo(new THREE.Vector2(0, 1));
     }
   }
 }

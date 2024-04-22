@@ -28,7 +28,7 @@ export const DatGUI = () => {
       const dispatcher = (type: DatEventType) => (value: any) => dispatchEvent(new DatEvent(type, { value }))
 
       gui.add(guiOptions, 'togglePlay').name('▶⏸').onChange(dispatcher('datgui-togglePlay'))
-      gui.add(guiOptions, 'speed', 0, 3).name('Velocidad').onChange(dispatcher('datgui-speed'))
+      gui.add(guiOptions, 'speed', 0, 2).name('Velocidad').onChange(dispatcher('datgui-speed'))
       gui.add(guiOptions, '2D').onChange(dispatcher('datgui-2D'))
     })
   })

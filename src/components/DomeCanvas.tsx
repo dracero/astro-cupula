@@ -4,6 +4,7 @@ import { useGLTF, OrbitControls, PerspectiveCamera, OrthographicCamera } from "@
 import { DomeObject } from "../objects/DomeObject";
 import { useFrame, useThree } from "@react-three/fiber";
 import { addDatListener } from "./DatGUI";
+import { ControllersManager } from "../xr/ControllersManager";
 
 const DOME_GLB = 'cupula_jml-test.glb'
 
@@ -21,7 +22,7 @@ export const DomeCanvas = (props) => {
   const gltf = useGLTF(DOME_GLB);
   const dome = w.dome = new DomeObject(gltf.scene);
 
-  scene.background = new THREE.Color(0x222233)
+  scene.background = new THREE.Color(0xffffff)
 
   addDatListener('datgui-2D', (e) => {
     setShow2d(e.value);
@@ -30,7 +31,11 @@ export const DomeCanvas = (props) => {
 
   useFrame(() => {
     dome.update()
+    ControllersManager.update()
   })
+
+  const domeScale = DomeObject.DOME_RADIUS / 10
+  const perspectivePos = new THREE.Vector3(15, 15, 30).multiplyScalar(domeScale)
 
   return (
     <>
@@ -46,8 +51,8 @@ export const DomeCanvas = (props) => {
       <OrbitControls ref={perspControlsRef} camera={perspectiveCamRef.current} enabled={!show2d} />
       <OrbitControls ref={orthoControlsRef} camera={orthoCamRef.current} enableRotate={false} enabled={show2d} />
 
-      <PerspectiveCamera ref={perspectiveCamRef} makeDefault position={[15, 15, 30]} />
-      <OrthographicCamera ref={orthoCamRef} position={[0, 0, 15]} zoom={40} />
+      <PerspectiveCamera ref={perspectiveCamRef} makeDefault position={perspectivePos} />
+      <OrthographicCamera ref={orthoCamRef} position={[0, 0, 15]} zoom={35 / domeScale} near={0} far={1000} />
 
       {/* Some custom lighting */}
       <ambientLight intensity={0.5} />

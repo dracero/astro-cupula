@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import type { InstantValues, SphereDomeModel } from "../models/SphereDomeModel";
-
-const ARROWS_SCALE = 0.4;
+import { DomeObject } from "./DomeObject";
 
 export class DomeModelDiagrams extends THREE.Group {
   private sphereLine: THREE.Line<THREE.BufferGeometry, THREE.Material>;
@@ -46,7 +45,7 @@ export class DomeModelDiagrams extends THREE.Group {
     // Friction force
     this.frictionArrow = new THREE.ArrowHelper();
     this.frictionArrow.name = "friction";
-    this.frictionArrow.setColor(0xffff00);
+    this.frictionArrow.setColor(0x0000ff);
     (this.frictionArrow.line.material as THREE.Material).depthTest = false;
     (this.frictionArrow.cone.material as THREE.Material).depthTest = false;
     this.add(this.frictionArrow);
@@ -82,12 +81,13 @@ export class DomeModelDiagrams extends THREE.Group {
     // Angle arc
     let theta = atan(position.x / position.y);
     if (theta < 0) theta = PI + theta;
-    const arc = new THREE.ArcCurve(0, 0, 3, PI / 2, PI / 2 - theta, true);
+    const arc = new THREE.ArcCurve(0, 0, DomeObject.DOME_RADIUS / 3, PI / 2, PI / 2 - theta, true);
     this.angleArc.geometry.setFromPoints(arc.getPoints(16));
 
-    this.thetaSpan.innerText = `θ = ${theta.toFixed(2)}`;
+    this.thetaSpan.innerText = `θ = ${theta.toFixed(4)}`;
 
     // Contact arrow
+    const arrowsScale = (0.6 * DomeObject.DOME_RADIUS) / 10;
     if (contactForce.lengthSq() == 0) {
       this.contactArrow.visible = false;
       this.contactSpan.innerText = "|| N || = 0";
@@ -96,7 +96,7 @@ export class DomeModelDiagrams extends THREE.Group {
       this.contactArrow.visible = true;
       this.contactArrow.setDirection(contactDir);
       this.contactArrow.position.set(position.x, position.y, 0);
-      this.contactArrow.scale.setScalar(contactForce.length() * ARROWS_SCALE);
+      this.contactArrow.scale.setScalar(contactForce.length() * arrowsScale);
       this.contactSpan.innerText = `|| N || = ${contactForce.length().toFixed(2)}`;
     }
 
@@ -112,7 +112,7 @@ export class DomeModelDiagrams extends THREE.Group {
       this.frictionArrow.position.set(position.x, position.y, 0);
       const offset = this.frictionArrow.position.clone().negate().setLength(r);
       this.frictionArrow.position.add(offset);
-      this.frictionArrow.scale.setScalar(frictionForce.length() * ARROWS_SCALE);
+      this.frictionArrow.scale.setScalar(frictionForce.length() * arrowsScale);
 
       this.frictionSpan.innerText = `|| Froz || = ${frictionForce.length().toFixed(2)}`;
     }

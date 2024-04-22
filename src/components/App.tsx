@@ -6,17 +6,23 @@ import { ThreeCanvas } from "./ThreeCanvas";
 const App = () => {
   return (
     <>
-    <ThreeCanvas>
-      <DomeCanvas/>
-    </ThreeCanvas>
+    <div id="page">
+      <ThreeCanvas>
+        <DomeCanvas/>
+      </ThreeCanvas>
 
-    <DatGUI />
+      <DatGUI />
 
-    <div className="text-overlay">
-      <span id="weight-force">|| P || = </span>
-      <span id="contact-force">|| N || = </span>
-      <span id="friction-force">|| Froz || = </span>
-      <span id="theta-value"></span>
+      <div className="text-overlay">
+        <span id="weight-force">|| P || = </span>
+        <span id="contact-force">|| N || = </span>
+        <span id="friction-force">|| Froz || = </span>
+        <span id="theta-value"></span>
+      </div>
+
+      <div className="slider-container">
+        <input id="time-slider" type="range" min="0" max="1" step="0.000001" />
+      </div>
     </div>
     </>
   );

@@ -20,6 +20,9 @@ export class DomeObject extends THREE.Object3D {
   private diagrams: DomeModelDiagrams;
   private model: SphereDomeModel;
 
+  static readonly DOME_RADIUS = 1.5;
+  static readonly SPHERE_RADIUS = 0.15;
+
   constructor(scene: THREE.Object3D) {
     super();
 
@@ -49,24 +52,30 @@ export class DomeObject extends THREE.Object3D {
 
   update() {
     this.animation.update();
-    if (!this.animation.isPlaying) return;
 
     const instant = this.model.getValuesAt(this.animation.time);
     this.diagrams.update(instant);
   }
 
   private initSphere(mesh: THREE.Mesh) {
+    // Rescale ball
+    if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+    const box = mesh.geometry.boundingBox;
+    const glbRadius = (box.max.x - box.min.x) / 2;
+    const ballScale = DomeObject.SPHERE_RADIUS / glbRadius;
     this.sphereMesh = mesh;
+    this.sphereMesh.scale.setScalar(ballScale);
 
+    // And setup model & animation
     this.model = new SphereDomeModel({
-      mass: 1.2,
-      domeRadius: 10,
-      sphereRadius: 1,
+      mass: 1,
+      domeRadius: DomeObject.DOME_RADIUS,
+      sphereRadius: DomeObject.SPHERE_RADIUS,
       friction: 0.1,
-      thetaStart: 0.01,
+      thetaStart: 1e-2,
     });
 
-    this.animation = new SphereAnimation(mesh, this.model);
+    this.animation = new SphereAnimation(this.sphereMesh, this.model);
     this.animation.action.play();
   }
 
@@ -76,8 +85,18 @@ export class DomeObject extends THREE.Object3D {
   }
 
   private initDome(mesh: THREE.Mesh) {
+    // Rescale dome
+    if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+    const box = mesh.geometry.boundingBox;
+    const glbRadius = (box.max.x - box.min.x) / 2;
+    const domeScale = DomeObject.DOME_RADIUS / glbRadius;
     this.domeMesh = mesh;
-    const glbMaterial = mesh.material as THREE.MeshStandardMaterial;
-    this.domeMesh.material = new THREE.MeshPhongMaterial({ color: glbMaterial.color, side: THREE.DoubleSide });
+    this.domeMesh.scale.setScalar(domeScale);
+
+    // Also add wireframe dome
+    const wireframeMat = new THREE.MeshPhongMaterial({ color: 0x0, wireframe: true });
+    const wireframeMesh = new THREE.Mesh(this.domeMesh.geometry, wireframeMat);
+    wireframeMesh.scale.setScalar(domeScale);
+    this.add(wireframeMesh);
   }
 }

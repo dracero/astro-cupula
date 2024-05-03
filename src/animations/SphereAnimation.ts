@@ -5,8 +5,8 @@ import { Clock } from "../utils/Clock";
 
 export class SphereAnimation {
   static readonly name = "sphere-animation";
-  static readonly duration = 3.5; // Seconds
 
+  readonly duration; // Seconds
   speed: number = guiOptions.speed;
   mixer: THREE.AnimationMixer;
   action: THREE.AnimationAction;
@@ -24,6 +24,8 @@ export class SphereAnimation {
       positions.push(position.x, position.y, 0);
       rotations.push(rotation);
     });
+
+    this.duration = times[times.length - 1];
 
     const positionTrack = new THREE.VectorKeyframeTrack(".position", times, positions);
     const rotationTrack = new THREE.VectorKeyframeTrack(".rotation[z]", times, rotations);
@@ -54,7 +56,7 @@ export class SphereAnimation {
 
   update() {
     this.mixer.update(Clock.delta * this.speed);
-    this.slider.value = `${this.time / SphereAnimation.duration}`;
+    this.slider.value = `${this.time / this.duration}`;
   }
 
   togglePlay(value = this.action.paused) {
@@ -62,7 +64,7 @@ export class SphereAnimation {
   }
 
   private onSliderUpdate(ev: Event) {
-    const time = parseFloat(this.slider.value) * SphereAnimation.duration;
+    const time = parseFloat(this.slider.value) * this.duration;
     this.action.time = time;
     this.togglePlay(false);
   }

@@ -20,7 +20,7 @@ export class DomeObject extends THREE.Object3D {
   private diagrams: DomeModelDiagrams;
   private model: SphereDomeModel;
 
-  static readonly DOME_RADIUS = 1.5;
+  static readonly DOME_RADIUS = 3;
   static readonly SPHERE_RADIUS = 0.15;
 
   constructor(scene: THREE.Object3D) {

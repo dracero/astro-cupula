@@ -36,7 +36,7 @@ export class ControllersManager extends THREE.EventDispatcher<XRControllerEvent>
   }
 
   static update() {
-    this.instance.update();
+    this.instance?.update();
   }
 
   // get ray() {}
